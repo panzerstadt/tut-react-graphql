@@ -1,62 +1,56 @@
 const { GraphQLServer } = require("graphql-yoga");
-const DB = require("./db");
-
-let idCount = DB.size;
+const { prisma } = require("./generated/prisma-client");
+require("colors");
 
 // actual implementation of the GraphQL schema
 const resolvers = {
   Query: {
     info: () => `this is the API endpoints of a Hacker News Clone`,
-    feed: () =>
-      [...DB.entries()].map(entry => ({
-        id: entry[0],
-        ...entry[1]
-      })),
-    link: (parent, args) => {
-      return DB.get(args.id);
+    feed: (root, args, context, info) => context.prisma.links(),
+    link: (parent, args, context, info) => {
+      return context.prisma.link({
+        id: args.id
+      });
     }
   },
   Mutation: {
-    post: (parent, args) => {
-      const id = `link-${idCount++}`;
-      const link = {
-        description: args.description,
-        url: args.url
-      };
-      DB.set(id, link);
-      return { id, ...link };
+    post: (root, args, context, info) => {
+      return context.prisma.createLink({
+        url: args.url,
+        description: args.description
+      });
     },
-    updateLink: (parent, args) => {
-      if (DB.has(args.id)) {
-        const original = DB.get(args.id);
-        DB.addToDB(
-          args.id,
-          args.url || original.url,
-          args.description || original.description
-        );
-        return DB.get(args.id);
-      } else {
-        return null;
-      }
+    updateLink: (parent, args, context, info) => {
+      return context.prisma.updateLink({
+        data: {
+          url: args.url,
+          description: args.description
+        },
+        where: {
+          id: args.id
+        }
+      });
     },
-    deleteLink: (parent, args) => {
-      if (DB.has(args.id)) {
-        const data = {
-          id: args.id,
-          ...DB.get(args.id)
-        };
-        DB.delete(args.id);
-        return data;
-      } else {
-        return null;
-      }
+    deleteLink: (parent, args, context, info) => {
+      return context.prisma.deleteLink({
+        id: args.id
+      });
     }
   }
 };
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
-  resolvers
+  resolvers,
+  context: { prisma }
 });
 
-server.start(() => console.log(`server is running on http://localhost:4000`));
+server
+  .start(() =>
+    console.log(`server is running on http://localhost:4000`.bgBlack.cyan)
+  )
+  .catch(e =>
+    console.error(
+      `something bad happened! check out what it is: ${e}`.bgBlack.red
+    )
+  );

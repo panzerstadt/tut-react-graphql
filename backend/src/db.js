@@ -11,3 +11,4 @@ addToDB("link-2", "www.yahoo.com", "old school search for the internet");
 
 const moduleExport = (module.exports = DB);
 moduleExport.addToDB = addToDB;
+moduleExport.idCount = DB.size;

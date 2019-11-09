@@ -1,0 +1,11 @@
+# http endpoint for prisma API
+#endpoint: ""
+endpoint: https://us1.prisma.sh/tang-li-qun-b48c3d/tut-react-graphql-prisma-backend/dev
+
+# file that contains my datamodel
+datamodel: datamodel.graphql
+
+# language and location for graphql client
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client

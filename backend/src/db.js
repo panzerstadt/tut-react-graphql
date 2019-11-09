@@ -1,3 +1,6 @@
+// this is the offline DB
+// by adding prisma, the code will stop using this and connect to the AWS aurora instance as DB instead
+
 const DB = new Map();
 
 const addToDB = (key, url, description) => DB.set(key, { url, description });

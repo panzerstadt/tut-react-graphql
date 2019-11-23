@@ -7,5 +7,9 @@ datamodel: datamodel.graphql
 
 # language and location for graphql client
 generate:
-  - generator: javascript-client
+  - generator: typescript-client
     output: ../src/generated/prisma-client
+
+hooks:
+  post-deploy:
+    - prisma generate

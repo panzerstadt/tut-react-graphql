@@ -1,5 +1,5 @@
 const { GraphQLServer } = require("graphql-yoga");
-const DB = require("./db");
+const DB = require("../db");
 const idCount = DB.idCount;
 
 // actual implementation of the GraphQL schema

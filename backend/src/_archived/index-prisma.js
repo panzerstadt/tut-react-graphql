@@ -1,4 +1,4 @@
-const { prisma } = require("./generated/prisma-client");
+const { prisma } = require("../generated/prisma-client");
 require("colors");
 
 const main = async () => {

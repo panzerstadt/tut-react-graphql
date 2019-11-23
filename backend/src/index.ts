@@ -4,12 +4,20 @@ import { prisma, Prisma } from "./generated/prisma-client";
 
 import { query } from "./resolvers/Query";
 import { mutation } from "./resolvers/Mutation";
+import { user } from "./resolvers/User";
+import { link } from "./resolvers/Link";
+
 import { IResolvers } from "graphql-tools";
 import { GQLResolver } from "./schema";
+import { DateTimeResolver } from "graphql-scalars";
 
 const resolvers = {
   Query: query,
-  Mutation: mutation
+  Mutation: mutation,
+  User: user,
+  Link: link,
+  // custom types
+  DateTime: DateTimeResolver
 } as GQLResolver;
 
 const server = new GraphQLServer({

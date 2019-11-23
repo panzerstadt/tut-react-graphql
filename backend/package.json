@@ -7,12 +7,14 @@
     "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
     "start:prod": "pm2 start src/index.js",
     "stop": "pm2 kill src/index.js",
-    "gen": "graphql-schema-typescript generate-ts src/schema.graphql --output src/schema.d.ts",
-    "gen:watch": "nodemon --watch src/schemas.graphql --exec npm run gen"
+    "gen": "graphql-schema-typescript generate-ts 'src/schema.graphql' --output 'src/schema.d.ts'",
+    "gen:watch": "nodemon --watch src/schemas.graphql --exec npm run gen",
+    "generate": "prisma generate && yarn gen"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors.ts": "^1.0.20",
+    "graphql-scalars": "^1.0.4",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "pm2": "^4.1.2",

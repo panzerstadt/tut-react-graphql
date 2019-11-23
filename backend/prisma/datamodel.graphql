@@ -2,7 +2,10 @@ type Link {
   id: ID! @id
   description: String!
   url: String!
-  postedBy: User
+  postedBy: User @relation(name: "LinkByUser")
+  lastUpdatedBy: User @relation(name: "LinkUpdatedByUser")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type User {
@@ -10,5 +13,5 @@ type User {
   name: String!
   email: String! @unique
   password: String!
-  links: [Link!]!
+  links: [Link!]! @relation(name: "LinkByUser", onDelete: CASCADE)
 }

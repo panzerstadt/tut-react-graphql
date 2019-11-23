@@ -14,11 +14,16 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 type Link {
   id: ID!
   description: String!
   url: String!
   postedBy: User
+  lastUpdatedBy: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type LinkConnection {
@@ -32,6 +37,7 @@ input LinkCreateInput {
   description: String!
   url: String!
   postedBy: UserCreateOneWithoutLinksInput
+  lastUpdatedBy: UserCreateOneInput
 }
 
 input LinkCreateManyWithoutPostedByInput {
@@ -43,6 +49,7 @@ input LinkCreateWithoutPostedByInput {
   id: ID
   description: String!
   url: String!
+  lastUpdatedBy: UserCreateOneInput
 }
 
 type LinkEdge {
@@ -57,12 +64,18 @@ enum LinkOrderByInput {
   description_DESC
   url_ASC
   url_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type LinkPreviousValues {
   id: ID!
   description: String!
   url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input LinkScalarWhereInput {
@@ -108,6 +121,22 @@ input LinkScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [LinkScalarWhereInput!]
   OR: [LinkScalarWhereInput!]
   NOT: [LinkScalarWhereInput!]
@@ -135,6 +164,7 @@ input LinkUpdateInput {
   description: String
   url: String
   postedBy: UserUpdateOneWithoutLinksInput
+  lastUpdatedBy: UserUpdateOneInput
 }
 
 input LinkUpdateManyDataInput {
@@ -167,6 +197,7 @@ input LinkUpdateManyWithWhereNestedInput {
 input LinkUpdateWithoutPostedByDataInput {
   description: String
   url: String
+  lastUpdatedBy: UserUpdateOneInput
 }
 
 input LinkUpdateWithWhereUniqueWithoutPostedByInput {
@@ -224,6 +255,23 @@ input LinkWhereInput {
   url_ends_with: String
   url_not_ends_with: String
   postedBy: UserWhereInput
+  lastUpdatedBy: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [LinkWhereInput!]
   OR: [LinkWhereInput!]
   NOT: [LinkWhereInput!]
@@ -304,6 +352,11 @@ input UserCreateInput {
   links: LinkCreateManyWithoutPostedByInput
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutLinksInput {
   create: UserCreateWithoutLinksInput
   connect: UserWhereUniqueInput
@@ -357,6 +410,13 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  name: String
+  email: String
+  password: String
+  links: LinkUpdateManyWithoutPostedByInput
+}
+
 input UserUpdateInput {
   name: String
   email: String
@@ -368,6 +428,15 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneWithoutLinksInput {
@@ -383,6 +452,11 @@ input UserUpdateWithoutLinksDataInput {
   name: String
   email: String
   password: String
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutLinksInput {

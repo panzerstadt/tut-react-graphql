@@ -1,8 +1,10 @@
+scalar DateTime
+
 type Query {
   info: String!
   links: [Link!]!
   link(id: ID!): Link!
-  search(text: String): links
+  search(text: String): [Link!]!
 }
 
 type Mutation {
@@ -18,11 +20,9 @@ type Link {
   description: String!
   url: String!
   postedBy: User
-}
-
-type AuthPayload {
-  token: String
-  user: User
+  lastUpdatedBy: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type User {
@@ -30,4 +30,9 @@ type User {
   name: String!
   email: String!
   links: [Link!]!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }

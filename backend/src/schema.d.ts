@@ -16,6 +16,7 @@ export interface GQLQuery {
   info: string;
   links: Array<GQLLink>;
   link: GQLLink;
+  search: Array<GQLLink>;
 }
 
 export interface GQLLink {
@@ -23,6 +24,9 @@ export interface GQLLink {
   description: string;
   url: string;
   postedBy?: GQLUser;
+  lastUpdatedBy?: GQLUser;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface GQLUser {
@@ -66,6 +70,7 @@ export interface GQLQueryTypeResolver<TParent = any> {
   info?: QueryToInfoResolver<TParent>;
   links?: QueryToLinksResolver<TParent>;
   link?: QueryToLinkResolver<TParent>;
+  search?: QueryToSearchResolver<TParent>;
 }
 
 export interface QueryToInfoResolver<TParent = any, TResult = any> {
@@ -83,11 +88,21 @@ export interface QueryToLinkResolver<TParent = any, TResult = any> {
   (parent: TParent, args: QueryToLinkArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface QueryToSearchArgs {
+  text?: string;
+}
+export interface QueryToSearchResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: QueryToSearchArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface GQLLinkTypeResolver<TParent = any> {
   id?: LinkToIdResolver<TParent>;
   description?: LinkToDescriptionResolver<TParent>;
   url?: LinkToUrlResolver<TParent>;
   postedBy?: LinkToPostedByResolver<TParent>;
+  lastUpdatedBy?: LinkToLastUpdatedByResolver<TParent>;
+  createdAt?: LinkToCreatedAtResolver<TParent>;
+  updatedAt?: LinkToUpdatedAtResolver<TParent>;
 }
 
 export interface LinkToIdResolver<TParent = any, TResult = any> {
@@ -103,6 +118,18 @@ export interface LinkToUrlResolver<TParent = any, TResult = any> {
 }
 
 export interface LinkToPostedByResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface LinkToLastUpdatedByResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface LinkToCreatedAtResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface LinkToUpdatedAtResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

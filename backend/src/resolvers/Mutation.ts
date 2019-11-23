@@ -14,20 +14,25 @@ export const mutation: GQLMutationTypeResolver = {
       postedBy: { connect: { id: userId } }
     });
   },
-  updateLink: (parent, args, context: Context, info) =>
-    context.prisma.updateLink({
+  updateLink: (parent, args, context: Context, info) => {
+    const userId = getUserId(context);
+    return context.prisma.updateLink({
       data: {
         url: args.url,
-        description: args.description
+        description: args.description,
+        lastUpdatedBy: { connect: { id: userId } }
       },
       where: {
         id: args.id
       }
-    }),
-  deleteLink: (parent, args, context: Context, info) =>
-    context.prisma.deleteLink({
+    });
+  },
+  deleteLink: (parent, args, context: Context, info) => {
+    const userId = getUserId(context);
+    return context.prisma.deleteLink({
       id: args.id
-    }),
+    });
+  },
   signup: async (parent, args, context: Context, info) => {
     const password = await bcrypt.hash(args.password, 10);
 

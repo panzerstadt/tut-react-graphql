@@ -1,9 +1,9 @@
 import { GQLMutationTypeResolver } from "../schema";
 import { Context } from "../schema-local"; // https://github.com/graphql-boilerplates/typescript-graphql-server/blob/master/basic/src/utils.ts
 
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { APP_SECRET, getUserId } = require("../utils");
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import { APP_SECRET, getUserId } from "../utils"
 
 export const mutation: GQLMutationTypeResolver = {
   createLink: (parent, args, context: Context, info) => {
